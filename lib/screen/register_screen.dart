@@ -336,18 +336,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
         // 업로드 된 파일 url
         imageUrl = supabase.storage.from('food_pick').getPublicUrl(fineName);
-        print(imageUrl);
-
-        await supabase.from('user').insert(
-              UserModel(
-                uid: res.user!.id,
-                name: _nicknameController.text,
-                email: emailValue,
-                introduce: _introduceController.text,
-                profileUrl: imageUrl,
-              ).toMap(),
-            );
       }
+
+      await supabase.from('user').insert(
+            UserModel(
+              uid: res.user!.id,
+              name: _nicknameController.text,
+              email: emailValue,
+              introduce: _introduceController.text,
+              profileUrl: imageUrl,
+            ).toMap(),
+          );
       // data insert
     } else {
       isRegisterSuccess = false;
