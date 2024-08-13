@@ -1,10 +1,10 @@
-class Favorite {
+class FavoriteModel {
   int? id;
   DateTime? createdAt;
   final String favoriteUid;
   final int foodStoreId;
 
-  Favorite({
+  FavoriteModel({
     this.id,
     this.createdAt,
     required this.favoriteUid,
@@ -12,8 +12,8 @@ class Favorite {
   });
 
   // JSON 데이터를 Dart 객체로 변환하기 위한 팩토리 메서드
-  factory Favorite.fromJson(Map<dynamic, dynamic> json) {
-    return Favorite(
+  factory FavoriteModel.fromJson(Map<dynamic, dynamic> json) {
+    return FavoriteModel(
       id: json['id'],
       createdAt: DateTime.parse(json['created_at']),
       favoriteUid: json['favorite_uid'],

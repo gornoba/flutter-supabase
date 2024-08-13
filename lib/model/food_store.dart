@@ -1,4 +1,4 @@
-class Store {
+class FoodStoreModel {
   int? id;
   String? storeImgUrl;
   final String storeAddr;
@@ -9,7 +9,7 @@ class Store {
   final double longitude;
   DateTime? createdAt;
 
-  Store({
+  FoodStoreModel({
     this.id,
     this.storeImgUrl,
     required this.storeAddr,
@@ -22,8 +22,8 @@ class Store {
   });
 
   // JSON 데이터를 Dart 객체로 변환하기 위한 팩토리 메서드
-  factory Store.fromJson(Map<dynamic, dynamic> json) {
-    return Store(
+  factory FoodStoreModel.fromJson(Map<dynamic, dynamic> json) {
+    return FoodStoreModel(
       id: json['id'],
       storeImgUrl: json['store_img_url'],
       storeAddr: json['store_addr'],

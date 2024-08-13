@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:food_pick_app/screen/edit_screen.dart';
 import 'package:food_pick_app/screen/login_screen.dart';
 import 'package:food_pick_app/screen/main_screen.dart';
 import 'package:food_pick_app/screen/register_screen.dart';
+import 'package:food_pick_app/screen/search_address_screen.dart';
 import 'package:food_pick_app/screen/splash_screen.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
@@ -42,6 +44,8 @@ class MyApp extends StatelessWidget {
         '/login': (context) => const LoginScreen(),
         '/register': (context) => const RegisterScreen(),
         '/main': (context) => const MainScreen(),
+        '/edit': (context) => const EditScreen(),
+        '/search_address': (context) => const SearchAddressScreen(),
       },
     );
   }
