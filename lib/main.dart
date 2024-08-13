@@ -5,14 +5,20 @@ import 'package:food_pick_app/screen/main_screen.dart';
 import 'package:food_pick_app/screen/register_screen.dart';
 import 'package:food_pick_app/screen/splash_screen.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:flutter_naver_map/flutter_naver_map.dart';
 
 Future<void> main() async {
   await dotenv.load(fileName: ".env");
 
   WidgetsFlutterBinding.ensureInitialized();
-  Supabase.initialize(
+  await Supabase.initialize(
       url: dotenv.env['SUPABASE_URL'] ?? '',
       anonKey: dotenv.env['SUPABASE_KEY'] ?? '');
+
+  await NaverMapSdk.instance.initialize(
+    clientId: dotenv.env['NAVER_MAP_CLIENT_ID'] ?? '',
+    onAuthFailed: (ex) => print('네이버맵 인증오류: $ex'),
+  );
 
   runApp(const MyApp());
 }

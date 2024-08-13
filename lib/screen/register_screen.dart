@@ -152,7 +152,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         Navigator.pop(context);
                       } else {
                         // 가입실패
-                        showSnackBar(context, '가입에 실패했습니다.');
+                        showSnackBar(context, '가입에 실패했습니다.', Colors.redAccent);
                         return;
                       }
                     },
@@ -311,47 +311,52 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   Future<bool> registerAccount(String emailValue, String passwordValue) async {
     bool isRegisterSuccess = false;
-    final AuthResponse res =
-        await supabase.auth.signUp(email: emailValue, password: passwordValue);
 
-    if (res.user != null) {
-      isRegisterSuccess = true;
+    try {
+      final AuthResponse res = await supabase.auth
+          .signUp(email: emailValue, password: passwordValue);
 
-      // 프로필 이미지 업로드
-      DateTime nowTime = DateTime.now();
+      if (res.user != null) {
+        isRegisterSuccess = true;
 
-      String? imageUrl;
-      if (profileImage != null) {
-        final imgFile = profileImage!;
-        final fineName = 'profiles/${res.user!.id}_${nowTime.toString()}.jpg';
+        // 프로필 이미지 업로드
+        DateTime nowTime = DateTime.now();
 
-        await supabase.storage.from('food_pick').upload(
-              fineName,
-              imgFile,
-              fileOptions: FileOptions(
-                cacheControl: '3600',
-                upsert: false,
-              ),
+        String? imageUrl;
+        if (profileImage != null) {
+          final imgFile = profileImage!;
+          final fineName = 'profiles/${res.user!.id}_${nowTime.toString()}.jpg';
+
+          await supabase.storage.from('food_pick').upload(
+                fineName,
+                imgFile,
+                fileOptions: FileOptions(
+                  cacheControl: '3600',
+                  upsert: false,
+                ),
+              );
+
+          // 업로드 된 파일 url
+          imageUrl = supabase.storage.from('food_pick').getPublicUrl(fineName);
+        }
+
+        await supabase.from('user').insert(
+              UserModel(
+                uid: res.user!.id,
+                name: _nicknameController.text,
+                email: emailValue,
+                introduce: _introduceController.text,
+                profileUrl: imageUrl,
+              ).toMap(),
             );
-
-        // 업로드 된 파일 url
-        imageUrl = supabase.storage.from('food_pick').getPublicUrl(fineName);
+        // data insert
+      } else {
+        isRegisterSuccess = false;
       }
 
-      await supabase.from('user').insert(
-            UserModel(
-              uid: res.user!.id,
-              name: _nicknameController.text,
-              email: emailValue,
-              introduce: _introduceController.text,
-              profileUrl: imageUrl,
-            ).toMap(),
-          );
-      // data insert
-    } else {
-      isRegisterSuccess = false;
+      return isRegisterSuccess;
+    } catch (e) {
+      return isRegisterSuccess;
     }
-
-    return isRegisterSuccess;
   }
 }

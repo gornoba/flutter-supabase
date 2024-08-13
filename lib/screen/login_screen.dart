@@ -103,7 +103,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                     if (!context.mounted) return;
                     if (!isLoginSuccess) {
-                      showSnackBar(context, '로그인을 실패하였습니다.');
+                      showSnackBar(context, '로그인을 실패하였습니다.', Colors.redAccent);
                       return;
                     }
 
@@ -149,15 +149,20 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Future<bool> loginWithEmail(String email, String password) async {
     bool isLoginSuccess = false;
-    final AuthResponse response = await supabase.auth
-        .signInWithPassword(email: email, password: password);
 
-    if (response.user != null) {
-      isLoginSuccess = true;
-    } else {
-      isLoginSuccess = false;
+    try {
+      final AuthResponse response = await supabase.auth
+          .signInWithPassword(email: email, password: password);
+
+      if (response.user != null) {
+        isLoginSuccess = true;
+      } else {
+        isLoginSuccess = false;
+      }
+
+      return isLoginSuccess;
+    } catch (e) {
+      return isLoginSuccess;
     }
-
-    return isLoginSuccess;
   }
 }
